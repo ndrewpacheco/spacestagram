@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-// import Card from "./components/Card";
+import Card from "./components/Card";
 
 // import Feed from "./components/Feed";
-// https://api.nasa.gov/planetary/apod?count=1&api_key=0HdcX2lic5pubhu69hRqcCY9B5ndLUpVqtlr0cLL
+const apiURL = `https://api.nasa.gov/planetary/apod?count=10&api_key=${process.env.REACT_APP_NASA_KEY}`;
+//
 
 function App() {
   const [apodData, setApodData] = useState([]);
+  console.log(apiURL);
   useEffect(() => {
-    fetch(
-      "https://api.nasa.gov/planetary/apod?count=10&api_key=0HdcX2lic5pubhu69hRqcCY9B5ndLUpVqtlr0cLL"
-    )
+    fetch(apiURL)
       .then((res) => res.json())
       .then(
         (res) => setApodData(res),
         (error) => {
-          // error handling
+          console.log("Error:", error);
         }
       );
   }, []);
@@ -24,29 +24,13 @@ function App() {
     <div className='container'>
       <header className='header'>
         <div className='header--info'>
-          <h1>Spacestagram</h1> <p>Brought to you by NASA's Image API</p>
+          <h1>Spacestagram</h1>{" "}
+          <p>Brought to you by NASA's Astronomy Picture of the Day API</p>
         </div>
       </header>
       <main className='feed'>
         {apodData.map((apod) => {
-          return (
-            <div className='card'>
-              <img
-                src={apod.url}
-                alt='astronomy pic of the day'
-                className='card--img'
-              />
-              <div className='card--info'>
-                <h1>{apod.title}</h1>
-                <h3>{apod.date}</h3>
-                <p>{apod.explanation}</p>
-              </div>
-              <button type='button'>
-                {" "}
-                <span style={{ color: "red" }}>&#9825;</span> Like
-              </button>
-            </div>
-          );
+          return <Card apod={apod} />;
         })}
       </main>
     </div>
