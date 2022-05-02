@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import Card from "./components/Card";
-
-// import Feed from "./components/Feed";
+import Card from "./components/Card/Card";
+import Header from "./components/Header";
 const apiURL = `https://api.nasa.gov/planetary/apod?count=10&api_key=${process.env.REACT_APP_NASA_KEY}`;
-//
 
 function App() {
   const [apodData, setApodData] = useState([]);
-  console.log(apiURL);
+
   useEffect(() => {
     fetch(apiURL)
       .then((res) => res.json())
@@ -21,19 +19,17 @@ function App() {
   }, []);
 
   return (
-    <div className='container'>
-      <header className='header'>
-        <div className='header--info'>
-          <h1>Spacestagram</h1>{" "}
-          <p>Brought to you by NASA's Astronomy Picture of the Day API</p>
-        </div>
-      </header>
-      <main className='feed'>
-        {apodData.map((apod) => {
-          return <Card apod={apod} />;
-        })}
-      </main>
-    </div>
+    <>
+      <Header />
+
+      <div className='container'>
+        <main className='feed'>
+          {apodData.map((apod, idx) => {
+            return <Card apod={apod} id={`image_${idx + 1}`} key={idx} />;
+          })}
+        </main>
+      </div>
+    </>
   );
 }
 
